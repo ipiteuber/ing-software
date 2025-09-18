@@ -1,6 +1,4 @@
-# ing-software
-Proyecto de Gestión de Reservas
-
+# Proyecto de Gestión de Reservas
 Este proyecto tiene como objetivo digitalizar el proceso de reservas de habitaciones mediante una plataforma intuitiva y accesible para clientes y administradores.
 Incluye:
 
