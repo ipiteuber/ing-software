@@ -1,0 +1,64 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="landing-container" style="padding: 6rem;">
+    <!-- Hero -->
+    <section class="hero-section">
+        <h1>Hotel Pacific Reef</h1>
+        <p>Haz tu reserva hoy.</p>
+        <a href="#" class="btn-main">Contáctanos</a>
+    </section>
+
+    <section class="images-section">
+        <img src="{% static 'images/hero.jpg' %}" alt="Piscina de noche" class="landing-img">
+        <img src="{% static 'images/hero_2.jpg' %}" alt="Piscina de tarde" class="landing-img">
+    </section>
+
+
+    <div style="max-width:800px; margin:0 auto; text-align:center; color:#444;">
+        <p>
+            Pacific Reef es un destino ideal frente al mar, donde la comodidad y la elegancia se combinan para ofrecer
+            una experiencia inolvidable. Con habitaciones modernas, restaurante con vista al océano y un servicio de
+            primer nivel, somos la opción perfecta tanto para viajeros de descanso como para quienes buscan un entorno
+            exclusivo para sus negocios. Nuestro compromiso es brindar hospitalidad, seguridad y confort en cada detalle.
+        </p>
+    </div>
+    <div style="text-align:center; margin:2rem 0;">
+        <a href="#" class="btn"
+            style="background:#222; color:#fff; padding:0.7rem 2rem; border-radius:6px; text-decoration:none;">Reservar</a>
+    </div>
+ <h2 style="margin-top:3rem; text-align:center; font-size:1.8rem; color:#333;">
+    Experiencias de clientes
+</h2>
+
+<div style="display:flex; justify-content:center; flex-wrap:wrap; gap:2rem; margin-top:2rem;">
+    
+    <!-- Card 1 -->
+    <div style="background:#fff; border-radius:16px; padding:1.8rem; width:300px; 
+                box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform 0.2s;">
+        <p style="font-size:0.95rem; color:#444; line-height:1.5;">
+            "Una experiencia increible, la vista al mar desde la habitacion fue lo mejor de nuestro viaje."
+        </p>
+        <div style="display:flex; align-items:center; gap:0.8rem; margin-top:1.5rem;">
+            <img src="{% static 'images/hero.jpg' %}" alt="Camila"
+                style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+            <span style="font-weight:600; color:#222;">Camila</span>
+        </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div style="background:#fff; border-radius:16px; padding:1.8rem; width:300px; 
+                box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform 0.2s;">
+        <p style="font-size:0.95rem; color:#444; line-height:1.5;">
+            "Muy buen servicio, habitaciones muy limpias. Recomendaria mejorar la velocidad del check-in."
+        </p>
+        <div style="display:flex; align-items:center; gap:0.8rem; margin-top:1.5rem;">
+            <img src="{% static 'images/icon.png' %}" alt="Valentina"
+                style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+            <span style="font-weight:600; color:#222;">Valentina</span>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

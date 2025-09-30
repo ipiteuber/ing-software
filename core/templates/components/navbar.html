@@ -1,0 +1,33 @@
+{% load static %}
+
+<!-- Navbar -->
+<header id="cs-navigation">
+    <div class="cs-container">
+        <!--Nav Logo-->
+        <a href="/" class="cs-logo" aria-label="back to home">
+            <!-- CORRECCION!!!: icono corregido, tamaño fijo sin deformar -->
+            <img src="{% static 'images/icon.png' %}" alt="logo" width="32" height="32"
+                style="width: 32px; height: 32px; object-fit: contain;" decoding="async">
+            <!-- FIN DE CORRECCION -->
+        </a>
+        <!--Navigation List-->
+        <nav class="cs-nav" role="navigation">
+            <!--Mobile Nav Toggle-->
+            <button class="cs-toggle" aria-label="mobile menu toggle">
+                <div class="cs-box" aria-hidden="true">
+                    <span class="cs-line cs-line1" aria-hidden="true"></span>
+                    <span class="cs-line cs-line2" aria-hidden="true"></span>
+                    <span class="cs-line cs-line3" aria-hidden="true"></span>
+                </div>
+            </button>
+            <div class="cs-ul-wrapper">
+                <ul id="cs-expanded" class="cs-ul" aria-expanded="false">
+                    <li class="cs-li"><a href="{% url 'landing_page' %}" class="cs-li-link cs-active">Inicio</a></li>
+                    <li class="cs-li"><a href="{% url 'habitaciones' %}" class="cs-li-link">Habitaciones</a></li>
+                    <li class="cs-li"><a href="{% url 'reservar' %}" class="cs-li-link">Reservar</a></li>
+                </ul>
+            </div>
+        </nav>
+        <a href="{% url 'mis_reservas' %}" class="cs-button-solid cs-nav-button">Mis Reservas</a>
+    </div>
+</header>
