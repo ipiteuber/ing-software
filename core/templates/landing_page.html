@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="landing-container" style="padding: 6rem; margin-top: 6rem;">
+<div class="landing-container" style="padding: 2rem; margin-top: 6rem; max-width: 90%;">
     <!-- Hero -->
     <section class="hero-section" style="text-align:center;">
         <h1 style="font-size:3rem;">Hotel Pacific Reef</h1>
@@ -10,7 +10,7 @@
         <a href="{% url 'reservar' %}" class="btn-main">Reservar</a>
     </section>
 
-    <section class="images-section" style="display:flex; justify-content:center; gap:2rem; margin:2rem 0;">
+    <section class="images-section" style="display:flex; justify-content:center; gap:2rem; margin:2rem 0; overflow: hidden; object-fit: cover;">
         <img src="{% static 'images/hero.jpg' %}" alt="Piscina de noche" class="landing-img" style="width:350px; border-radius:16px;">
         <img src="{% static 'images/hero_2.jpg' %}" alt="Piscina de tarde" class="landing-img" style="width:350px; border-radius:16px;">
     </section>

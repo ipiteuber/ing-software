@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="landing-container">
+<div class="landing-container" style="padding: 3rem; margin-top: 8rem;">
     <section class="hero-section">
         <h1>Hotel Pacific Reef</h1>
         <p>Haz tu reserva hoy.</p>
@@ -30,8 +30,8 @@
         {% else %}
             <div class="message message-info">
                 No hay habitaciones disponibles para ese rango de fechas.
-                <a href="{% url 'reservar' %}" class="btn-cancel">Elegir otras fechas</a>
             </div>
+            <a href="{% url 'reservar' %}" class="btn-cancel" style="">Elegir otras fechas</a>
         {% endif %}
     </div>
     {% if messages %}

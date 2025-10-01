@@ -5,6 +5,7 @@ from .forms import ReservaForm, ConsultaReservaForm, AdminLoginForm, HabitacionF
 from .decorators import admin_required
 from django.db.models import Q
 from django.utils.dateparse import parse_date
+from datetime import datetime
 
 # ---------------------- Index ----------------------
 def landing_page(request):
@@ -17,20 +18,22 @@ def reservar(request):
     habitaciones_disponibles = None
 
     # Validar fechas
-    if fecha_inicio and fecha_fin and fecha_inicio >= fecha_fin:
-        messages.error(request, "La fecha de inicio debe ser anterior a la fecha de fin.")
-        return render(request, "reservar.html", {
-            "form": None,
-            "fecha_inicio": None,
-            "fecha_fin": None,
-        })
-
     if fecha_inicio and fecha_fin:
+        fecha_inicio = parse_date(fecha_inicio)
+        fecha_fin = parse_date(fecha_fin)
+
+        if fecha_inicio >= fecha_fin:
+            messages.error(request, "La fecha de inicio debe ser anterior a la fecha de fin.")
+            return render(request, "reservar.html", {
+                "form": None,
+                "fecha_inicio": None,
+                "fecha_fin": None,
+            })
+
         habitaciones_disponibles = Habitacion.objects.filter(
             estado="disponible"
         ).exclude(
-            reservas__fecha_inicio__lt=fecha_fin,
-            reservas__fecha_fin__gt=fecha_inicio
+            Q(reservas__fecha_inicio__lt=fecha_fin) & Q(reservas__fecha_fin__gt=fecha_inicio)
         ).distinct()
 
     if request.method == "POST":
@@ -42,9 +45,8 @@ def reservar(request):
             fecha_inicio_post = request.POST.get('fecha_inicio')
             fecha_fin_post = request.POST.get('fecha_fin')
             # Convierte a datetime si tu modelo lo requiere
-            from datetime import datetime
-            fecha_inicio_dt = datetime.strptime(fecha_inicio_post, "%Y-%m-%d")
-            fecha_fin_dt = datetime.strptime(fecha_fin_post, "%Y-%m-%d")
+            fecha_inicio_dt = datetime.strptime(fecha_inicio_post, "%Y-%m-%d").date()
+            fecha_fin_dt = datetime.strptime(fecha_fin_post, "%Y-%m-%d").date()
             rut = form.cleaned_data['rut']
             cliente, _ = Cliente.objects.get_or_create(
                 rut=rut,
@@ -65,10 +67,11 @@ def reservar(request):
             messages.success(request, f"Reserva creada. Código: {reserva.codigo}")
             return redirect('simular_pago', codigo=reserva.codigo)
     else:
-        form = None
         if habitaciones_disponibles is not None and habitaciones_disponibles.exists():
             form = ReservaForm()
             form.fields['habitacion'].queryset = habitaciones_disponibles
+        else:
+            form = None
 
     return render(request, "reservar.html", {
         "form": form,
