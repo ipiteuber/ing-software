@@ -1,0 +1,11 @@
+{% extends "base/base.html" %}
+{% block content %}
+<div class="container" style="padding: 6rem;">
+    <h2>Sesión administrador</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-main">Eliminar cuenta</button>
+    </form>
+    <a href="{% url 'logout_admin' %}" class="btn-main">Cerrar sesión</a>
+</div>
+{% endblock %}
