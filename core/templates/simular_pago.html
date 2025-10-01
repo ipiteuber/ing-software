@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+<div class="landing-container" style="padding: 6rem;">
+    <section class="hero-section">
+        <h2>Simular Pago</h2>
+        <p>Reserva: <strong>{{ reserva.codigo }}</strong> | Monto: <strong>${{ reserva.deposito_requerido }}</strong></p>
+    </section>
+    <div class="form-container">
+        <form method="post" class="main-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-main">Pagar</button>
+            <a href="{% url 'mis_reservas' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

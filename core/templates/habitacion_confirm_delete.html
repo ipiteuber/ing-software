@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+<div class="landing-container" style="padding: 6rem;">
+    <section class="hero-section">
+        <h2>Eliminar Habitación</h2>
+        <p>¿Estás seguro que deseas eliminar la habitación <strong>{{ habitacion.id_habitacion }}</strong>?</p>
+    </section>
+    <div class="form-container">
+        <form method="post" class="main-form">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger">Eliminar</button>
+            <a href="{% url 'gestion_reservas' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

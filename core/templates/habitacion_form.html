@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+<div class="landing-container" style="padding: 6rem;">
+    <section class="hero-section">
+        <h2>{{ accion }} Habitación</h2>
+    </section>
+    <div class="form-container">
+        <form method="post" class="main-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-main">{{ accion }}</button>
+            <a href="{% url 'gestion_reservas' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
