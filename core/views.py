@@ -95,9 +95,11 @@ def mis_reservas(request):
 
 def simular_pago(request, codigo):
     reserva = get_object_or_404(Reserva, codigo=codigo)
+
     if reserva.estado != "pendiente":
         messages.info(request, "Esta reserva ya fue pagada o no está disponible para pago.")
-        return redirect('mis_reservas')
+        return render(request, "simular_pago.html", {"reserva": reserva, "form": None})
+    
     if request.method == "POST":
         form = PagoSimuladoForm(request.POST)
         if form.is_valid():
@@ -110,9 +112,10 @@ def simular_pago(request, codigo):
             reserva.estado = "confirmada"
             reserva.save()
             messages.success(request, "Pago simulado exitosamente. ¡Reserva confirmada!")
-            return redirect('mis_reservas')
+            return render(request, "simular_pago.html", {"reserva": reserva, "form": None})
     else:
         form = PagoSimuladoForm()
+
     return render(request, "simular_pago.html", {"reserva": reserva, "form": form})
 
 # ---------------------- Admin ----------------------

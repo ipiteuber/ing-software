@@ -4,15 +4,22 @@
 <div class="landing-container" style="padding: 6rem; margin-top: 6rem;">
     <section class="hero-section">
         <h2>Simulación de Pago</h2>
-        <p>Reserva: <strong>{{ reserva.codigo }}</strong> | Monto: <strong>${{ reserva.deposito_requerido }}</strong></p>
+        <p>Reserva: <strong>{{ reserva.codigo }}</strong> | 
+        Monto: <strong>${{ reserva.deposito_requerido }}</strong></p>
     </section>
     <div class="form-container">
-        <form method="post" class="main-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn-main">Pagar</button>
-            <a href="{% url 'mis_reservas' %}" class="btn-cancel">Cancelar</a>
-        </form>
+        {% if form %}
+            <form method="post" class="main-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn-main">Pagar</button>
+                <a href="{% url 'mis_reservas' %}" class="btn-cancel">Cancelar</a>
+            </form>
+        {% else %}
+            <p class="success-msg">Reserva confirmada correctamente.</p>
+            <p>Tu codigo de reserva es: <strong>{{ reserva.codigo }}</strong></p>
+            <a href="{% url 'mis_reservas' %}" class="btn-main" style="display: flex; justify-content: center;">Ir a Mis Reservas</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
