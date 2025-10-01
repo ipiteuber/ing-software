@@ -1,5 +1,6 @@
 import re
 from django import forms
+from django.core.exceptions import ValidationError
 from .models import Reserva, Cliente, Habitacion, Pago
 
 def validar_rut_chileno(rut):
@@ -20,7 +21,7 @@ def validar_rut_chileno(rut):
     return rut
 
 class ReservaForm(forms.Form):
-    rut = forms.CharField(label="RUT", max_length=20)
+    rut = forms.CharField(label="RUT", max_length=9, min_length=8)
     nombre = forms.CharField(label="Nombre", max_length=150)
     email = forms.EmailField(label="Email")
     telefono = forms.CharField(label="Teléfono", max_length=30)
@@ -29,7 +30,11 @@ class ReservaForm(forms.Form):
     fecha_fin = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
 
     def clean_rut(self):
-        return validar_rut_chileno(self.cleaned_data['rut'])
+        rut = self.cleaned_data.get('rut')
+        rut = str(rut).replace(".", "").replace("-", "").upper()
+        if len(rut) < 8 or len(rut) > 9:
+            raise ValidationError("El RUT debe tener entre 8 y 9 caracteres (sin puntos ni guión).")
+        return rut
 
 class ConsultaReservaForm(forms.Form):
     rut = forms.CharField(label="RUT", max_length=20)
