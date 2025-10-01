@@ -1,0 +1,42 @@
+[
+  {
+    "model": "core.habitacion",
+    "fields": {
+      "id_habitacion": "HAB001",
+      "tipo": "Suite",
+      "capacidad": 2,
+      "precio": "80000.00",
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "core.habitacion",
+    "fields": {
+      "id_habitacion": "HAB002",
+      "tipo": "Doble",
+      "capacidad": 2,
+      "precio": "50000.00",
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "core.habitacion",
+    "fields": {
+      "id_habitacion": "HAB003",
+      "tipo": "Familiar",
+      "capacidad": 4,
+      "precio": "120000.00",
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "core.habitacion",
+    "fields": {
+      "id_habitacion": "HAB004",
+      "tipo": "Individual",
+      "capacidad": 1,
+      "precio": "35000.00",
+      "estado": "disponible"
+    }
+  }
+]
