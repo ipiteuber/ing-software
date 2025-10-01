@@ -99,7 +99,7 @@ button:hover, .cs-button:hover {
     border-color: #222;
 }
 .btn-danger {
-    background: #d90429;
+    background: #e2b1b9;
     color: #fff;
     border: none;
     padding: 0.7rem 1.5rem;
@@ -121,7 +121,7 @@ button:hover, .cs-button:hover {
     display: inline-block;
 }
 .btn-admin:hover {
-    background: #0077b6;
+    background: #9a9b9b;
     color: #fff;
 }
 .admin-access {
@@ -145,7 +145,7 @@ button:hover, .cs-button:hover {
     text-align: center;
 }
 .main-table th {
-    background: #0077b6;
+    background: #555658;
     color: #fff;
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -154,24 +154,25 @@ button:hover, .cs-button:hover {
     background: #f0f8ff;
 }
 .btn-table {
-    background: #0096c7;
+    background: #666666;
     color: #fff;
     border: none;
-    padding: 0.4rem 1rem;
+    padding: 0.3rem 1rem;
     border-radius: 5px;
     font-size: 0.95rem;
     margin-right: 0.3rem;
     text-decoration: none;
     transition: background 0.2s;
+    size: 100px;
 }
 .btn-table:hover {
-    background: #023e8a;
+    background: #494a4b;
 }
 .btn-table.btn-danger {
-    background: #d90429;
+    background: #caa9af;
 }
 .btn-table.btn-danger:hover {
-    background: #a30015;
+    background: #66484d;
 }
 .estado {
     padding: 0.3em 0.9em;

@@ -520,7 +520,7 @@
 }
 
 .btn-table {
-    background: #0096c7;
+    background: #4e5253;
     color: #fff;
     border: none;
     padding: 0.4rem 1rem;
@@ -532,13 +532,13 @@
     display: inline-block;
 }
 .btn-table:hover {
-    background: #023e8a;
+    background: #818385;
 }
 .btn-table.btn-danger {
-    background: #d90429;
+    background: #bb989d;
 }
 .btn-table.btn-danger:hover {
-    background: #a30015;
+    background: #66484d;
 }
 
 .estado {
@@ -609,7 +609,7 @@
     display: inline-block;
 }
 .btn-admin:hover {
-    background: #0077b6;
+    background: rgb(94, 95, 95);
     color: #fff;
 }
 
