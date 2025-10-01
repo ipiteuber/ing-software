@@ -1,0 +1,28 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+<div class="landing-container" style="padding: 6rem;">
+    <section class="hero-section">
+        <h2>Consulta tu reserva</h2>
+        <p>Ingresa tu RUT y código de reserva</p>
+    </section>
+    <div class="form-container">
+        <form method="post" class="main-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-main">Buscar</button>
+        </form>
+    </div>
+    {% if reserva %}
+    <div class="reserva-info">
+        <h3>Reserva encontrada</h3>
+        <ul>
+            <li><strong>Habitación:</strong> {{ reserva.habitacion }}</li>
+            <li><strong>Fecha inicio:</strong> {{ reserva.fecha_inicio }}</li>
+            <li><strong>Fecha fin:</strong> {{ reserva.fecha_fin }}</li>
+            <li><strong>Estado:</strong> {{ reserva.estado }}</li>
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

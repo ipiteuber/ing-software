@@ -1,0 +1,21 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="admin-access" style="padding: 6rem;">
+    <a href="{% url 'login_admin' %}" class="btn-admin">Acceso admin</a>
+</div>
+<div class="landing-container">
+    <section class="hero-section">
+        <h1>Hotel Pacific Reef</h1>
+        <p>Haz tu reserva hoy.</p>
+    </section>
+    <div class="form-container">
+        <form method="post" class="main-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-main">Reservar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
