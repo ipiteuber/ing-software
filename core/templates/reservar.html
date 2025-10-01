@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block content %}
-<div class="landing-container" style="padding: 3rem; margin-top: 8rem;">
+
+
+<div class="landing-container" style="padding: 3rem; margin-top: 6rem;">
     <section class="hero-section">
         <h1>Hotel Pacific Reef</h1>
         <p>Haz tu reserva hoy.</p>
@@ -58,5 +60,9 @@
             {% endfor %}
         </div>
     {% endif %}
+</div>
+
+<div class="admin-access" style="padding: 1rem; margin-top: 2rem;">
+    <a href="{% url 'login_admin' %}" class="btn-admin">Acceso admin</a>
 </div>
 {% endblock %}
