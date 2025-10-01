@@ -4,15 +4,15 @@
 {% block content %}
 <div class="landing-container" style="padding: 6rem;">
     <!-- Hero -->
-    <section class="hero-section">
-        <h1>Hotel Pacific Reef</h1>
-        <p>Haz tu reserva hoy.</p>
-        <a href="#" class="btn-main">Contáctanos</a>
+    <section class="hero-section" style="text-align:center;">
+        <h1 style="font-size:3rem;">Hotel Pacific Reef</h1>
+        <p style="color:#888; font-size:1.5rem;">Haz tu reserva hoy.</p>
+        <a href="{% url 'reservar' %}" class="btn-main">Reservar</a>
     </section>
 
-    <section class="images-section">
-        <img src="{% static 'images/hero.jpg' %}" alt="Piscina de noche" class="landing-img">
-        <img src="{% static 'images/hero_2.jpg' %}" alt="Piscina de tarde" class="landing-img">
+    <section class="images-section" style="display:flex; justify-content:center; gap:2rem; margin:2rem 0;">
+        <img src="{% static 'images/hero.jpg' %}" alt="Piscina de noche" class="landing-img" style="width:350px; border-radius:16px;">
+        <img src="{% static 'images/hero_2.jpg' %}" alt="Piscina de tarde" class="landing-img" style="width:350px; border-radius:16px;">
     </section>
 
 
@@ -24,10 +24,6 @@
             exclusivo para sus negocios. Nuestro compromiso es brindar hospitalidad, seguridad y confort en cada detalle.
         </p>
     </div>
-    <div style="text-align:center; margin:2rem 0;">
-        <a href="#" class="btn"
-            style="background:#222; color:#fff; padding:0.7rem 2rem; border-radius:6px; text-decoration:none;">Reservar</a>
-    </div>
  <h2 style="margin-top:3rem; text-align:center; font-size:1.8rem; color:#333;">
     Experiencias de clientes
 </h2>
@@ -36,9 +32,9 @@
     
     <!-- Card 1 -->
     <div style="background:#fff; border-radius:16px; padding:1.8rem; width:300px; 
-                box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform 0.2s;">
+                box-shadow:0 4px 12px rgba(0,0,0,0.08);">
         <p style="font-size:0.95rem; color:#444; line-height:1.5;">
-            "Una experiencia increible, la vista al mar desde la habitacion fue lo mejor de nuestro viaje."
+            "Una experiencia increíble, la vista al mar desde la habitación fue lo mejor de nuestro viaje."
         </p>
         <div style="display:flex; align-items:center; gap:0.8rem; margin-top:1.5rem;">
             <img src="{% static 'images/user.png' %}" alt="Camila"
@@ -49,9 +45,9 @@
 
     <!-- Card 2 -->
     <div style="background:#fff; border-radius:16px; padding:1.8rem; width:300px; 
-                box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform 0.2s;">
+                box-shadow:0 4px 12px rgba(0,0,0,0.08);">
         <p style="font-size:0.95rem; color:#444; line-height:1.5;">
-            "Muy buen servicio, habitaciones muy limpias. Recomendaria mejorar la velocidad del check-in."
+            "Muy buen servicio, habitaciones muy limpias. Recomendaría mejorar la velocidad del check-in."
         </p>
         <div style="display:flex; align-items:center; gap:0.8rem; margin-top:1.5rem;">
             <img src="{% static 'images/user.png' %}" alt="Valentina"
