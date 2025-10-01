@@ -2,20 +2,46 @@
 {% load static %}
 
 {% block content %}
-<div class="admin-access" style="padding: 6rem;">
-    <a href="{% url 'login_admin' %}" class="btn-admin">Acceso admin</a>
-</div>
 <div class="landing-container">
     <section class="hero-section">
         <h1>Hotel Pacific Reef</h1>
         <p>Haz tu reserva hoy.</p>
     </section>
     <div class="form-container">
-        <form method="post" class="main-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn-main">Reservar</button>
-        </form>
+        {% if not fecha_inicio or not fecha_fin %}
+            <!-- Formulario de fechas -->
+            <form method="get" class="main-form">
+                <label>Fecha inicio:</label>
+                <input type="date" name="fecha_inicio" required>
+                <label>Fecha fin:</label>
+                <input type="date" name="fecha_fin" required>
+                <button type="submit" class="btn-main">Buscar habitaciones</button>
+            </form>
+        {% elif form %}
+            <!-- Formulario de reserva -->
+            <form method="post" class="main-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio }}">
+                <input type="hidden" name="fecha_fin" value="{{ fecha_fin }}">
+                <button type="submit" class="btn-main">Reservar</button>
+                <a href="{% url 'reservar' %}" class="btn-cancel">Cambiar fechas</a>
+            </form>
+        {% else %}
+            <div class="message message-info">
+                No hay habitaciones disponibles para ese rango de fechas.
+                <a href="{% url 'reservar' %}" class="btn-cancel">Elegir otras fechas</a>
+            </div>
+        {% endif %}
     </div>
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -4,6 +4,7 @@ from .models import Cliente, Habitacion, Reserva, Administrador, Pago
 from .forms import ReservaForm, ConsultaReservaForm, AdminLoginForm, HabitacionForm, PagoSimuladoForm
 from .decorators import admin_required
 from django.db.models import Q
+from django.utils.dateparse import parse_date
 
 # ---------------------- Index ----------------------
 def landing_page(request):
@@ -11,46 +12,69 @@ def landing_page(request):
 
 # ---------------------- Reservas ----------------------
 def reservar(request):
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_fin = request.GET.get('fecha_fin')
+    habitaciones_disponibles = None
+
+    # Validar fechas
+    if fecha_inicio and fecha_fin and fecha_inicio >= fecha_fin:
+        messages.error(request, "La fecha de inicio debe ser anterior a la fecha de fin.")
+        return render(request, "reservar.html", {
+            "form": None,
+            "fecha_inicio": None,
+            "fecha_fin": None,
+        })
+
+    if fecha_inicio and fecha_fin:
+        habitaciones_disponibles = Habitacion.objects.filter(
+            estado="disponible"
+        ).exclude(
+            reservas__fecha_inicio__lt=fecha_fin,
+            reservas__fecha_fin__gt=fecha_inicio
+        ).distinct()
+
     if request.method == "POST":
         form = ReservaForm(request.POST)
+        if habitaciones_disponibles is not None:
+            form.fields['habitacion'].queryset = habitaciones_disponibles
         if form.is_valid():
-            fecha_inicio = form.cleaned_data['fecha_inicio']
-            fecha_fin = form.cleaned_data['fecha_fin']
-
-            # Filtrar habitaciones realmente disponibles para esas fechas
-            habitaciones_disponibles = Habitacion.objects.filter(
-                estado="disponible"
-            ).exclude(
-                reserva__fecha_inicio__lt=fecha_fin,
-                reserva__fecha_fin__gt=fecha_inicio
-            ).distinct()
-
-            # Si la habitación seleccionada no está disponible, mostrar error
+            # Obtener fechas desde POST
+            fecha_inicio_post = request.POST.get('fecha_inicio')
+            fecha_fin_post = request.POST.get('fecha_fin')
+            # Convierte a datetime si tu modelo lo requiere
+            from datetime import datetime
+            fecha_inicio_dt = datetime.strptime(fecha_inicio_post, "%Y-%m-%d")
+            fecha_fin_dt = datetime.strptime(fecha_fin_post, "%Y-%m-%d")
+            rut = form.cleaned_data['rut']
+            cliente, _ = Cliente.objects.get_or_create(
+                rut=rut,
+                defaults={
+                    'nombre': form.cleaned_data['nombre'],
+                    'email': form.cleaned_data['email'],
+                    'telefono': form.cleaned_data['telefono'],
+                }
+            )
             habitacion = form.cleaned_data['habitacion']
-            if habitacion not in habitaciones_disponibles:
-                form.add_error('habitacion', 'La habitación no está disponible para las fechas seleccionadas.')
-            else:
-                rut = form.cleaned_data['rut']
-                cliente, _ = Cliente.objects.get_or_create(
-                    rut=rut,
-                    defaults={
-                        'nombre': form.cleaned_data['nombre'],
-                        'email': form.cleaned_data['email'],
-                        'telefono': form.cleaned_data['telefono'],
-                    }
-                )
-                reserva = Reserva.objects.create(
-                    cliente=cliente,
-                    habitacion=habitacion,
-                    fecha_inicio=form.cleaned_data['fecha_inicio'],
-                    fecha_fin=form.cleaned_data['fecha_fin'],
-                    precio_total=habitacion.precio,
-                )
-                messages.success(request, f"Reserva creada. Código: {reserva.codigo}")
-                return redirect('simular_pago', codigo=reserva.codigo)
+            reserva = Reserva.objects.create(
+                cliente=cliente,
+                habitacion=habitacion,
+                fecha_inicio=fecha_inicio_dt,
+                fecha_fin=fecha_fin_dt,
+                precio_total=habitacion.precio,
+            )
+            messages.success(request, f"Reserva creada. Código: {reserva.codigo}")
+            return redirect('simular_pago', codigo=reserva.codigo)
     else:
-        form = ReservaForm()
-    return render(request, "reservar.html", {"form": form})
+        form = None
+        if habitaciones_disponibles is not None and habitaciones_disponibles.exists():
+            form = ReservaForm()
+            form.fields['habitacion'].queryset = habitaciones_disponibles
+
+    return render(request, "reservar.html", {
+        "form": form,
+        "fecha_inicio": fecha_inicio,
+        "fecha_fin": fecha_fin,
+    })
 
 def mis_reservas(request):
     reserva = None
