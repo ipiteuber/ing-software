@@ -1,40 +1,35 @@
 import re
 from django import forms
+from django.core.exceptions import ValidationError
 from .models import Reserva, Cliente, Habitacion, Pago
 
+
 def validar_rut_chileno(rut):
-    rut = rut.upper().replace("-", "").replace(".", "")
-    if not re.match(r'^\d{7,8}[0-9K]$', rut):
-        raise forms.ValidationError("Formato de RUT inválido.")
-    cuerpo = rut[:-1]
-    dv = rut[-1]
-    suma = 0
-    multiplo = 2
-    for c in reversed(cuerpo):
-        suma += int(c) * multiplo
-        multiplo = 9 if multiplo == 2 else multiplo - 1
-    res = 11 - (suma % 11)
-    dv_calc = "K" if res == 10 else "0" if res == 11 else str(res)
-    if dv != dv_calc:
-        raise forms.ValidationError("RUT inválido.")
+    rut = str(rut).replace(".", "").replace("-", "").upper()
+    if not re.match(r"^\d{7,8}[0-9K]$", rut):
+        raise ValidationError("RUT invalido. Debe ser 7 u 8 numeros y un digito verificador.")
     return rut
 
 class ReservaForm(forms.Form):
-    rut = forms.CharField(label="RUT", max_length=20)
+    rut = forms.CharField(label="RUT", max_length=12)
     nombre = forms.CharField(label="Nombre", max_length=150)
     email = forms.EmailField(label="Email")
-    telefono = forms.CharField(label="Teléfono", max_length=30)
+    telefono = forms.CharField(label="Telefono", max_length=30)
     habitacion = forms.ModelChoiceField(queryset=Habitacion.objects.filter(estado="disponible"))
-
+    fecha_inicio = forms.DateField(widget=forms.HiddenInput(), input_formats=['%Y-%m-%d'])
+    fecha_fin = forms.DateField(widget=forms.HiddenInput(), input_formats=['%Y-%m-%d'])
+    
     def clean_rut(self):
-        return validar_rut_chileno(self.cleaned_data['rut'])
+        rut = self.cleaned_data.get('rut')
+        return validar_rut_chileno(rut)
 
 class ConsultaReservaForm(forms.Form):
-    rut = forms.CharField(label="RUT", max_length=20)
+    rut = forms.CharField(label="RUT", max_length=12)
     codigo = forms.CharField(label="Código de Reserva", max_length=16)
 
     def clean_rut(self):
-        return validar_rut_chileno(self.cleaned_data['rut'])
+        rut = self.cleaned_data.get('rut')
+        return validar_rut_chileno(rut)
 
 class AdminLoginForm(forms.Form):
     id_admin = forms.CharField(label="ID Administrador", max_length=64)

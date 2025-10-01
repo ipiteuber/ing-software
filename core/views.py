@@ -41,12 +41,8 @@ def reservar(request):
         if habitaciones_disponibles is not None:
             form.fields['habitacion'].queryset = habitaciones_disponibles
         if form.is_valid():
-            # Obtener fechas desde POST
-            fecha_inicio_post = request.POST.get('fecha_inicio')
-            fecha_fin_post = request.POST.get('fecha_fin')
-            # Convierte a datetime si tu modelo lo requiere
-            fecha_inicio_dt = datetime.strptime(fecha_inicio_post, "%Y-%m-%d").date()
-            fecha_fin_dt = datetime.strptime(fecha_fin_post, "%Y-%m-%d").date()
+            fecha_inicio_dt = form.cleaned_data['fecha_inicio']
+            fecha_fin_dt = form.cleaned_data['fecha_fin']
             rut = form.cleaned_data['rut']
             cliente, _ = Cliente.objects.get_or_create(
                 rut=rut,
@@ -68,7 +64,10 @@ def reservar(request):
             return redirect('simular_pago', codigo=reserva.codigo)
     else:
         if habitaciones_disponibles is not None and habitaciones_disponibles.exists():
-            form = ReservaForm()
+            form = ReservaForm(initial={
+                "fecha_inicio": fecha_inicio,
+                "fecha_fin": fecha_fin
+            })
             form.fields['habitacion'].queryset = habitaciones_disponibles
         else:
             form = None

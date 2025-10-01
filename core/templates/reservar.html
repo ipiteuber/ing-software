@@ -21,9 +21,24 @@
             <!-- Formulario de reserva -->
             <form method="post" class="main-form">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio }}">
-                <input type="hidden" name="fecha_fin" value="{{ fecha_fin }}">
+                <p>
+                    <label for="id_rut">RUT:</label>
+                    <input type="text" name="rut" id="rut"
+                        placeholder="Ej: XX.XXX.XXX-X"
+                        value="{{ form.rut.value|default_if_none:'' }}"
+                        required>
+                    {% if form.rut.errors %}
+                        <span class="error">{{ form.rut.errors.0 }}</span>
+                    {% endif %}
+                </p>
+                {{ form.nombre.label_tag }} {{ form.nombre }}
+                {{ form.email.label_tag }} {{ form.email }}
+                {{ form.telefono.label_tag }} {{ form.telefono }}
+                {{ form.habitacion.label_tag }} {{ form.habitacion }}
+
+                <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio|date:'Y-m-d' }}">
+                <input type="hidden" name="fecha_fin" value="{{ fecha_fin|date:'Y-m-d' }}">
+
                 <button type="submit" class="btn-main">Reservar</button>
                 <a href="{% url 'reservar' %}" class="btn-cancel">Cambiar fechas</a>
             </form>
