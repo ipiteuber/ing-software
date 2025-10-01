@@ -5,10 +5,10 @@
     <div class="cs-container">
         <!--Nav Logo-->
         <a href="/" class="cs-logo" aria-label="back to home">
-            <!-- CORRECCION!!!: icono corregido, tamaño fijo sin deformar -->
+
             <img src="{% static 'images/icon.png' %}" alt="logo" width="32" height="32"
                 style="width: 32px; height: 32px; object-fit: contain;" decoding="async">
-            <!-- FIN DE CORRECCION -->
+
         </a>
         <!--Navigation List-->
         <nav class="cs-nav" role="navigation">
@@ -24,10 +24,10 @@
                 <ul id="cs-expanded" class="cs-ul" aria-expanded="false">
                     <li class="cs-li"><a href="{% url 'landing_page' %}" class="cs-li-link cs-active">Inicio</a></li>
                     <li class="cs-li"><a href="" class="cs-li-link">Habitaciones</a></li>
-                    <li class="cs-li"><a href="" class="cs-li-link">Reservar</a></li>
+                    <li class="cs-li"><a href="{% url 'reservar' %}" class="cs-li-link">Reservar</a></li>
                 </ul>
             </div>
         </nav>
-        <a href="" class="cs-button-solid cs-nav-button">Mis Reservas</a>
+        <a href="{% url 'mis_reservas' %}" class="cs-button-solid cs-nav-button">Mis Reservas</a>
     </div>
 </header>

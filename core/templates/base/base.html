@@ -18,6 +18,15 @@
 <body class="bg-custom">
 
   {% include "components/navbar.html" %}
+  {% if messages %}
+  <div style="max-width:600px;margin:1rem auto;">
+    {% for message in messages %}
+    <div style="padding:1rem; margin-bottom:0.5rem; border-radius:6px; background:#f0f0f0; color:#222;">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <main class="py-4">
     {% block content %}
@@ -29,5 +38,7 @@
   </footer>
 
   <script type="text/javascript" src="{% static 'js/general.js' %}"></script>
+
 </body>
+
 </html>
