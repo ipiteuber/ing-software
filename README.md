@@ -1,4 +1,5 @@
 # Proyecto de Gestión de Reservas
+
 Este proyecto tiene como objetivo digitalizar el proceso de reservas de habitaciones mediante una plataforma intuitiva y accesible para clientes y administradores. Incluye:
 
 - Diagramas UML: Casos de uso, actividades, clases y modelo de base de datos inicial.
