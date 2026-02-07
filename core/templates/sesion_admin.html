@@ -1,11 +1,38 @@
 {% extends "base/base.html" %}
+
 {% block content %}
-<div class="container" style="padding: 6rem; margin-top: 6rem;">
-    <h2>Sesión administrador</h2>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn-main">Eliminar cuenta</button>
-    </form>
-    <a href="{% url 'logout_admin' %}" class="btn-main">Cerrar sesión</a>
+<div class="pt-24 pb-16 px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-50 flex items-center justify-center">
+  <div class="w-full max-w-sm animate-slide-up">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+
+      <!-- Profile -->
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+          <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        </div>
+        <h2 class="font-serif text-xl font-bold text-dark">Mi Cuenta</h2>
+        <p class="text-sm text-gray-500 mt-1">Administrador</p>
+      </div>
+
+      <div class="space-y-3">
+        <a href="{% url 'gestion_reservas' %}" class="block w-full py-3 border border-gray-200 text-gray-700 font-medium text-sm rounded-lg hover:bg-gray-50 transition-colors text-center">
+          Volver a Gestión
+        </a>
+        <a href="{% url 'logout_admin' %}" class="block w-full py-3 border border-gray-200 text-gray-700 font-medium text-sm rounded-lg hover:bg-gray-50 transition-colors text-center">
+          Cerrar Sesión
+        </a>
+
+        <div class="pt-4 border-t border-gray-100">
+          <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="w-full py-3 bg-red-600 text-white font-medium text-sm rounded-lg hover:bg-red-700 transition-colors">
+              Eliminar Mi Cuenta
+            </button>
+            <p class="text-xs text-gray-400 text-center mt-2">Esta acción es irreversible.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

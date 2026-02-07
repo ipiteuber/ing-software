@@ -2,67 +2,136 @@
 {% load static %}
 
 {% block content %}
+<div class="pt-24 pb-16 px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-50">
+  <div class="max-w-lg mx-auto">
 
-
-<div class="landing-container" style="padding: 3rem; margin-top: 6rem;">
-    <section class="hero-section">
-        <h1>Hotel Pacific Reef</h1>
-        <p>Haz tu reserva hoy.</p>
-    </section>
-    <div class="form-container">
-        {% if not fecha_inicio or not fecha_fin %}
-            <!-- Formulario de fechas -->
-            <form method="get" class="main-form">
-                <label>Fecha inicio:</label>
-                <input type="date" name="fecha_inicio" required>
-                <label>Fecha fin:</label>
-                <input type="date" name="fecha_fin" required>
-                <button type="submit" class="btn-main">Buscar habitaciones</button>
-            </form>
-        {% elif form %}
-            <!-- Formulario de reserva -->
-            <form method="post" class="main-form">
-                {% csrf_token %}
-                <p>
-                    <label for="id_rut">RUT:</label>
-                    <input type="text" name="rut" id="rut"
-                        placeholder="Ej: XX.XXX.XXX-X"
-                        value="{{ form.rut.value|default_if_none:'' }}"
-                        required>
-                    {% if form.rut.errors %}
-                        <span class="error">{{ form.rut.errors.0 }}</span>
-                    {% endif %}
-                </p>
-                {{ form.nombre.label_tag }} {{ form.nombre }}
-                {{ form.email.label_tag }} {{ form.email }}
-                {{ form.telefono.label_tag }} {{ form.telefono }}
-                {{ form.habitacion.label_tag }} {{ form.habitacion }}
-
-                <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio|date:'Y-m-d' }}">
-                <input type="hidden" name="fecha_fin" value="{{ fecha_fin|date:'Y-m-d' }}">
-
-                <button type="submit" class="btn-main">Reservar</button>
-                <a href="{% url 'reservar' %}" class="btn-cancel">Cambiar fechas</a>
-            </form>
-        {% else %}
-            <div class="message message-info">
-                No hay habitaciones disponibles para ese rango de fechas.
-            </div>
-            <a href="{% url 'reservar' %}" class="btn-cancel">Elegir otras fechas</a>
-        {% endif %}
+    <!-- Header -->
+    <div class="text-center mb-8 animate-fade-in">
+      <h1 class="font-serif text-3xl sm:text-4xl font-bold text-dark mb-2">Reservar</h1>
+      <p class="text-gray-500">Encuentra la habitación perfecta para tu estadía.</p>
     </div>
-    {% if messages %}
-        <div>
-            {% for message in messages %}
-                <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-</div>
 
-<div class="admin-access" style="padding: 1rem; margin-top: 2rem;">
-    <a href="{% url 'login_admin' %}" class="btn-admin">Acceso admin</a>
+    <!-- Step Indicator -->
+    <div class="flex items-center justify-center gap-3 mb-8">
+      <div class="flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold
+          {% if not fecha_inicio %}bg-dark text-white{% else %}bg-green-500 text-white{% endif %}">
+          {% if fecha_inicio %}&#10003;{% else %}1{% endif %}
+        </span>
+        <span class="text-sm font-medium text-dark">Fechas</span>
+      </div>
+      <div class="w-8 h-px bg-gray-300"></div>
+      <div class="flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold
+          {% if fecha_inicio and form %}bg-dark text-white{% else %}bg-gray-200 text-gray-400{% endif %}">
+          2
+        </span>
+        <span class="text-sm font-medium {% if fecha_inicio and form %}text-dark{% else %}text-gray-400{% endif %}">Datos</span>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 animate-slide-up">
+      {% if not fecha_inicio or not fecha_fin %}
+        <!-- Step 1: Date Selection -->
+        <form method="get" class="space-y-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha de llegada</label>
+            <input type="date" name="fecha_inicio" required
+              class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-dark/20 focus:border-dark outline-none transition-all">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha de salida</label>
+            <input type="date" name="fecha_fin" required
+              class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-dark/20 focus:border-dark outline-none transition-all">
+          </div>
+          <button type="submit" class="w-full py-3 bg-dark text-white font-medium text-sm rounded-lg hover:bg-gray-800 transition-colors">
+            Buscar Habitaciones
+          </button>
+        </form>
+
+      {% elif form %}
+        <!-- Step 2: Reservation Form -->
+        <form method="post" class="space-y-5">
+          {% csrf_token %}
+
+          <div class="bg-gray-50 rounded-lg p-4 mb-2">
+            <p class="text-sm text-gray-500">
+              <span class="font-medium text-dark">{{ fecha_inicio|date:'d M Y' }}</span>
+              &rarr;
+              <span class="font-medium text-dark">{{ fecha_fin|date:'d M Y' }}</span>
+            </p>
+          </div>
+
+          <div>
+            <label for="id_rut" class="block text-sm font-medium text-gray-700 mb-1.5">RUT</label>
+            <input type="text" name="rut" id="id_rut" placeholder="Ej: 12.345.678-9"
+              value="{{ form.rut.value|default_if_none:'' }}" required
+              class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-dark/20 focus:border-dark outline-none transition-all">
+            {% if form.rut.errors %}<p class="mt-1 text-xs text-red-500">{{ form.rut.errors.0 }}</p>{% endif %}
+          </div>
+
+          <div>
+            <label for="id_nombre" class="block text-sm font-medium text-gray-700 mb-1.5">Nombre</label>
+            <input type="text" name="nombre" id="id_nombre"
+              value="{{ form.nombre.value|default_if_none:'' }}" required
+              class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-dark/20 focus:border-dark outline-none transition-all">
+          </div>
+
+          <div>
+            <label for="id_email" class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+            <input type="email" name="email" id="id_email"
+              value="{{ form.email.value|default_if_none:'' }}" required
+              class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-dark/20 focus:border-dark outline-none transition-all">
+          </div>
+
+          <div>
+            <label for="id_telefono" class="block text-sm font-medium text-gray-700 mb-1.5">Teléfono</label>
+            <input type="text" name="telefono" id="id_telefono"
+              value="{{ form.telefono.value|default_if_none:'' }}" required
+              class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-dark/20 focus:border-dark outline-none transition-all">
+          </div>
+
+          <div>
+            <label for="id_habitacion" class="block text-sm font-medium text-gray-700 mb-1.5">Habitación</label>
+            <select name="habitacion" id="id_habitacion"
+              class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-dark/20 focus:border-dark outline-none transition-all bg-white">
+              <option value="">Selecciona una habitación</option>
+              {% for h in form.habitacion.field.queryset %}
+                <option value="{{ h.id_habitacion }}" {% if form.habitacion.value == h.id_habitacion|slugify %}selected{% endif %}>
+                  {{ h.tipo }} — Cap. {{ h.capacidad }} — ${{ h.precio }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio|date:'Y-m-d' }}">
+          <input type="hidden" name="fecha_fin" value="{{ fecha_fin|date:'Y-m-d' }}">
+
+          <div class="flex gap-3 pt-2">
+            <button type="submit" class="flex-1 py-3 bg-dark text-white font-medium text-sm rounded-lg hover:bg-gray-800 transition-colors">
+              Confirmar Reserva
+            </button>
+            <a href="{% url 'reservar' %}" class="flex-1 py-3 border border-gray-200 text-gray-700 font-medium text-sm rounded-lg hover:bg-gray-50 transition-colors text-center">
+              Cambiar Fechas
+            </a>
+          </div>
+        </form>
+
+      {% else %}
+        <!-- No rooms available -->
+        <div class="text-center py-8">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <p class="text-gray-600 font-medium mb-1">Sin disponibilidad</p>
+          <p class="text-sm text-gray-400 mb-6">No hay habitaciones disponibles para ese rango de fechas.</p>
+          <a href="{% url 'reservar' %}" class="inline-flex items-center px-6 py-2.5 border border-dark text-dark font-medium text-sm rounded-lg hover:bg-dark hover:text-white transition-colors">
+            Elegir Otras Fechas
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}

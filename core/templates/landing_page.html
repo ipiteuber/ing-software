@@ -1,60 +1,144 @@
 {% extends "base/base.html" %}
 {% load static %}
+{% load format_precio %}
 
 {% block content %}
-<div class="landing-container" style="padding: 2rem; margin-top: 6rem; max-width: 90%;">
-    <!-- Hero -->
-    <section class="hero-section" style="text-align:center;">
-        <h1 style="font-size:3rem;">Hotel Pacific Reef</h1>
-        <p style="color:#888; font-size:1.5rem;">Haz tu reserva hoy.</p>
-        <a href="{% url 'reservar' %}" class="btn-main">Reservar</a>
-    </section>
-
-    <section class="images-section" style="display:flex; justify-content:center; gap:2rem; margin:2rem 0; overflow: hidden; object-fit: cover;">
-        <img src="{% static 'images/hero.jpg' %}" alt="Piscina de noche" class="landing-img" style="width:350px; border-radius:16px;">
-        <img src="{% static 'images/hero_2.jpg' %}" alt="Piscina de tarde" class="landing-img" style="width:350px; border-radius:16px;">
-    </section>
-
-
-    <div style="max-width:800px; margin:0 auto; text-align:center; color:#444;">
-        <p>
-            Pacific Reef es un destino ideal frente al mar, donde la comodidad y la elegancia se combinan para ofrecer
-            una experiencia inolvidable. Con habitaciones modernas, restaurante con vista al océano y un servicio de
-            primer nivel, somos la opción perfecta tanto para viajeros de descanso como para quienes buscan un entorno
-            exclusivo para sus negocios. Nuestro compromiso es brindar hospitalidad, seguridad y confort en cada detalle.
-        </p>
+<!-- Hero -->
+<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0">
+    <img src="{% static 'images/hero.jpg' %}" alt="Hotel Pacific Reef" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
+  </div>
+  <div class="relative z-10 text-center px-4 max-w-3xl mx-auto animate-fade-in">
+    <p class="text-sm uppercase tracking-[0.25em] text-white/70 font-sans mb-4">Bienvenido a</p>
+    <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
+      Pacific Reef
+    </h1>
+    <p class="text-lg sm:text-xl text-white/80 font-light mb-10 max-w-xl mx-auto">
+      Donde la comodidad y la elegancia se combinan para una experiencia inolvidable frente al mar.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="{% url 'reservar' %}" class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-dark font-medium text-sm rounded-lg hover:bg-gray-100 transition-colors">
+        Reservar Ahora
+      </a>
+      <a href="{% url 'habitaciones' %}" class="inline-flex items-center justify-center px-8 py-3.5 border border-white/40 text-white font-medium text-sm rounded-lg hover:bg-white/10 transition-colors">
+        Ver Habitaciones
+      </a>
     </div>
- <h2 style="margin-top:3rem; text-align:center; font-size:1.8rem; color:#333;">
-    Experiencias de clientes
-</h2>
+  </div>
+</section>
 
-<div style="display:flex; justify-content:center; flex-wrap:wrap; gap:2rem; margin-top:2rem;">
-    
-    <!-- Card 1 -->
-    <div style="background:#fff; border-radius:16px; padding:1.8rem; width:300px; 
-                box-shadow:0 4px 12px rgba(0,0,0,0.08);">
-        <p style="font-size:0.95rem; color:#444; line-height:1.5;">
-            "Una experiencia increíble, la vista al mar desde la habitación fue lo mejor de nuestro viaje."
-        </p>
-        <div style="display:flex; align-items:center; gap:0.8rem; margin-top:1.5rem;">
-            <img src="{% static 'images/user.png' %}" alt="Camila"
-                style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
-            <span style="font-weight:600; color:#222;">Camila</span>
+<!-- Room Preview -->
+{% if habitaciones %}
+<section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 animate-slide-up">
+      <p class="text-sm uppercase tracking-[0.2em] text-accent font-medium mb-2">Nuestras Habitaciones</p>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-dark">Comodidad y Elegancia</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for hab in habitaciones %}
+      <div class="group bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 animate-slide-up-delay">
+        <div class="h-48 bg-gray-100 overflow-hidden">
+          <img src="{% static hab.image_path %}" alt="{{ hab.tipo }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
         </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div style="background:#fff; border-radius:16px; padding:1.8rem; width:300px; 
-                box-shadow:0 4px 12px rgba(0,0,0,0.08);">
-        <p style="font-size:0.95rem; color:#444; line-height:1.5;">
-            "Muy buen servicio, habitaciones muy limpias. Recomendaría mejorar la velocidad del check-in."
-        </p>
-        <div style="display:flex; align-items:center; gap:0.8rem; margin-top:1.5rem;">
-            <img src="{% static 'images/user.png' %}" alt="Valentina"
-                style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
-            <span style="font-weight:600; color:#222;">Valentina</span>
+        <div class="p-6">
+          <h3 class="font-serif text-xl font-semibold text-dark mb-1">{{ hab.tipo }}</h3>
+          <p class="text-sm text-gray-500 mb-3">Capacidad: {{ hab.capacidad }} personas</p>
+          <div class="flex items-center justify-between">
+            <span class="text-lg font-semibold text-dark">{{ hab.precio|formato_clp }}<span class="text-sm font-normal text-gray-400">/noche</span></span>
+            <a href="{% url 'reservar' %}" class="text-sm font-medium text-accent hover:text-accent-light transition-colors">Reservar &rarr;</a>
+          </div>
         </div>
+      </div>
+      {% endfor %}
     </div>
+    <div class="text-center mt-10">
+      <a href="{% url 'habitaciones' %}" class="inline-flex items-center text-sm font-medium text-dark border border-dark px-6 py-2.5 rounded-lg hover:bg-dark hover:text-white transition-colors">
+        Ver Todas las Habitaciones
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
 
-</div>
+<!-- About -->
+<section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+  <div class="max-w-3xl mx-auto text-center animate-slide-up">
+    <p class="text-sm uppercase tracking-[0.2em] text-accent font-medium mb-2">Sobre Nosotros</p>
+    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-dark mb-6">Un Destino Frente al Mar</h2>
+    <p class="text-gray-600 leading-relaxed text-lg">
+      Pacific Reef es un destino ideal frente al mar, donde la comodidad y la elegancia se combinan para ofrecer
+      una experiencia inolvidable. Con habitaciones modernas, restaurante con vista al océano y un servicio de
+      primer nivel, somos la opción perfecta tanto para viajeros de descanso como para quienes buscan un entorno
+      exclusivo para sus negocios.
+    </p>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="rounded-2xl overflow-hidden h-72">
+        <img src="{% static 'images/hero.jpg' %}" alt="Piscina de noche" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+      </div>
+      <div class="rounded-2xl overflow-hidden h-72">
+        <img src="{% static 'images/hero_2.jpg' %}" alt="Piscina de tarde" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14">
+      <p class="text-sm uppercase tracking-[0.2em] text-accent font-medium mb-2">Testimonios</p>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-dark">Experiencias de Nuestros Huéspedes</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Testimonial 1 -->
+      <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+        <svg class="w-8 h-8 text-accent/30 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+        <p class="text-gray-600 leading-relaxed mb-6">
+          "Una experiencia increíble, la vista al mar desde la habitación fue lo mejor de nuestro viaje. Definitivamente volveremos."
+        </p>
+        <div class="flex items-center gap-3">
+          <img src="{% static 'images/user.png' %}" alt="Camila" class="w-10 h-10 rounded-full object-cover">
+          <div>
+            <p class="font-medium text-dark text-sm">Camila</p>
+            <p class="text-xs text-gray-400">Huésped verificada</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+        <svg class="w-8 h-8 text-accent/30 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+        <p class="text-gray-600 leading-relaxed mb-6">
+          "Muy buen servicio, habitaciones impecables y una atención de primer nivel. El restaurante con vista al océano es espectacular."
+        </p>
+        <div class="flex items-center gap-3">
+          <img src="{% static 'images/user.png' %}" alt="Valentina" class="w-10 h-10 rounded-full object-cover">
+          <div>
+            <p class="font-medium text-dark text-sm">Valentina</p>
+            <p class="text-xs text-gray-400">Huésped verificada</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 px-4 sm:px-6 lg:px-8 bg-dark">
+  <div class="max-w-2xl mx-auto text-center">
+    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">¿Listo para tu Estadía?</h2>
+    <p class="text-gray-400 mb-8">Reserva ahora y vive la experiencia Pacific Reef.</p>
+    <a href="{% url 'reservar' %}" class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-dark font-medium text-sm rounded-lg hover:bg-gray-100 transition-colors">
+      Reservar Ahora
+    </a>
+  </div>
+</section>
 {% endblock %}

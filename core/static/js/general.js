@@ -1,32 +1,34 @@
-// Navbar
-var CSbody = document.querySelector('body');
-const CSnavbarMenu = document.querySelector('#cs-navigation');
-const CShamburgerMenu = document.querySelector('#cs-navigation .cs-toggle');
-
-CShamburgerMenu.addEventListener('click', function () {
-	CShamburgerMenu.classList.toggle('cs-active');
-	CSnavbarMenu.classList.toggle('cs-active');
-	CSbody.classList.toggle('cs-open');
-	ariaExpanded();
-});
-
-function ariaExpanded() {
-	const csUL = document.querySelector('#cs-expanded');
-	const csExpanded = csUL.getAttribute('aria-expanded');
-
-	if (csExpanded === 'false') {
-		csUL.setAttribute('aria-expanded', 'true');
-	} else {
-		csUL.setAttribute('aria-expanded', 'false');
-	}
-}
-
 // Mobile nav toggle
-const dropDowns = Array.from(document.querySelectorAll('#cs-navigation .cs-dropdown'));
-for (const item of dropDowns) {
-	const onClick = () => {
-		item.classList.toggle('cs-active');
-	};
-	item.addEventListener('click', onClick);
+const mobileToggle = document.getElementById('mobile-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+
+if (mobileToggle && mobileMenu) {
+  mobileToggle.addEventListener('click', function () {
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+
+    // Animate hamburger lines
+    const lines = mobileToggle.querySelectorAll('.hamburger-line');
+    if (!isOpen) {
+      lines[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
+      lines[1].style.opacity = '0';
+      lines[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
+    } else {
+      lines[0].style.transform = '';
+      lines[1].style.opacity = '';
+      lines[2].style.transform = '';
+    }
+  });
 }
-                                
+
+// Navbar shadow on scroll
+const nav = document.getElementById('main-nav');
+if (nav) {
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 10) {
+      nav.classList.add('shadow-md');
+    } else {
+      nav.classList.remove('shadow-md');
+    }
+  });
+}

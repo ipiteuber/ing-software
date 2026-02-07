@@ -8,8 +8,24 @@ from django.utils.dateparse import parse_date
 from datetime import datetime
 
 # ---------------------- Index ----------------------
+ROOM_IMAGES = {
+    'Suite': 'images/rooms/suite.jpg',
+    'Doble': 'images/rooms/doble.jpg',
+    'Familiar': 'images/rooms/familiar.jpg',
+    'Individual': 'images/rooms/individual.jpg',
+}
+
 def landing_page(request):
-    return render(request, 'landing_page.html')
+    habitaciones = list(Habitacion.objects.filter(estado="disponible")[:3])
+    for h in habitaciones:
+        h.image_path = ROOM_IMAGES.get(h.tipo, 'images/rooms/suite.jpg')
+    return render(request, 'landing_page.html', {'habitaciones': habitaciones})
+
+def habitaciones(request):
+    rooms = list(Habitacion.objects.filter(estado="disponible"))
+    for room in rooms:
+        room.image_path = ROOM_IMAGES.get(room.tipo, 'images/rooms/suite.jpg')
+    return render(request, 'habitaciones.html', {'habitaciones': rooms})
 
 # ---------------------- Reservas ----------------------
 def reservar(request):

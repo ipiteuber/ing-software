@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['hotel-reef-sgr.onrender.com']
+ALLOWED_HOSTS = ['hotel-reef-sgr.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition

@@ -1,44 +1,92 @@
 {% extends "base/base.html" %}
 {% load static %}
+{% load format_precio %}
+
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/gestion_reservas.css' %}">
+<div class="pt-24 pb-16 px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-50">
+  <div class="max-w-5xl mx-auto">
 
-
-<div class="landing-container" style="padding: 6rem; margin-top: 6rem; max-width: 90%;">
-    <section class="hero-section">
-        <h2>Gestión de Habitaciones</h2>
-        <a href="{% url 'agregar_habitacion' %}" class="btn-main">Agregar habitación</a>
-    </section>
-    <div class="table-container">
-        <table class="main-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tipo</th>
-                    <th>Capacidad</th>
-                    <th>Precio</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for habitacion in habitaciones %}
-                <tr>
-                    <td>{{ habitacion.id_habitacion }}</td>
-                    <td>{{ habitacion.tipo }}</td>
-                    <td>{{ habitacion.capacidad }}</td>
-                    <td>${{ habitacion.precio }}</td>
-                    <td>{{ habitacion.estado }}</td>
-                    <td>
-                        <a href="{% url 'editar_habitacion' habitacion.id_habitacion %}" class="btn-table">Editar</a>
-                        <a href="{% url 'eliminar_habitacion' habitacion.id_habitacion %}" class="btn-table btn-danger">Eliminar</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="6">No hay habitaciones registradas.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 animate-fade-in">
+      <div>
+        <h1 class="font-serif text-3xl font-bold text-dark">Gestión de Habitaciones</h1>
+        <p class="text-gray-500 text-sm mt-1">Administra las habitaciones del hotel.</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="{% url 'agregar_habitacion' %}" class="inline-flex items-center px-4 py-2.5 bg-dark text-white font-medium text-sm rounded-lg hover:bg-gray-800 transition-colors">
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Agregar
+        </a>
+        <a href="{% url 'eliminar_admin' %}" class="inline-flex items-center px-4 py-2.5 border border-gray-200 text-gray-700 font-medium text-sm rounded-lg hover:bg-gray-50 transition-colors">
+          Mi Cuenta
+        </a>
+        <a href="{% url 'logout_admin' %}" class="inline-flex items-center px-4 py-2.5 border border-gray-200 text-gray-700 font-medium text-sm rounded-lg hover:bg-gray-50 transition-colors">
+          Salir
+        </a>
+      </div>
     </div>
+
+    <!-- Table Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-slide-up">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-gray-100">
+              <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-6 py-4">Tipo</th>
+              <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-6 py-4">Capacidad</th>
+              <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-6 py-4">Precio</th>
+              <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-6 py-4">Estado</th>
+              <th class="text-right text-xs font-semibold text-gray-500 uppercase tracking-wider px-6 py-4">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            {% for habitacion in habitaciones %}
+            <tr class="hover:bg-gray-50/50 transition-colors">
+              <td class="px-6 py-4">
+                <span class="font-medium text-sm text-dark">{{ habitacion.tipo }}</span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-sm text-gray-600">{{ habitacion.capacidad }} personas</span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-sm font-medium text-dark">{{ habitacion.precio|formato_clp }}</span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                  {% if habitacion.estado == 'disponible' %}bg-green-50 text-green-700
+                  {% elif habitacion.estado == 'ocupada' %}bg-red-50 text-red-700
+                  {% elif habitacion.estado == 'mantenimiento' %}bg-yellow-50 text-yellow-700
+                  {% endif %}">
+                  {{ habitacion.get_estado_display }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <a href="{% url 'editar_habitacion' habitacion.id_habitacion %}"
+                    class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                    Editar
+                  </a>
+                  <a href="{% url 'eliminar_habitacion' habitacion.id_habitacion %}"
+                    class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                    Eliminar
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="px-6 py-12 text-center">
+                <p class="text-gray-400 text-sm">No hay habitaciones registradas.</p>
+                <a href="{% url 'agregar_habitacion' %}" class="inline-flex items-center mt-3 text-sm font-medium text-dark hover:underline">
+                  Agregar la primera habitación &rarr;
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

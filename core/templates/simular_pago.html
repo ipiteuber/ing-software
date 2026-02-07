@@ -1,25 +1,97 @@
 {% extends "base/base.html" %}
 {% load static %}
+{% load format_precio %}
+
 {% block content %}
-<div class="landing-container" style="padding: 6rem; margin-top: 6rem;">
-    <section class="hero-section">
-        <h2>Simulación de Pago</h2>
-        <p>Reserva: <strong>{{ reserva.codigo }}</strong> | 
-        Monto: <strong>${{ reserva.deposito_requerido }}</strong></p>
-    </section>
-    <div class="form-container">
-        {% if form %}
-            <form method="post" class="main-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn-main">Pagar</button>
-                <a href="{% url 'mis_reservas' %}" class="btn-cancel">Cancelar</a>
-            </form>
-        {% else %}
-            <p class="success-msg">Reserva confirmada correctamente.</p>
-            <p>Tu codigo de reserva es: <strong>{{ reserva.codigo }}</strong></p>
-            <a href="{% url 'mis_reservas' %}" class="btn-main" style="display: flex; justify-content: center;">Ir a Mis Reservas</a>
-        {% endif %}
+<div class="pt-24 pb-16 px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-50">
+  <div class="max-w-lg mx-auto">
+
+    <!-- Header -->
+    <div class="text-center mb-8 animate-fade-in">
+      <h1 class="font-serif text-3xl sm:text-4xl font-bold text-dark mb-2">Pago de Reserva</h1>
+      <p class="text-gray-500">Reserva <span class="font-medium text-dark">{{ reserva.codigo }}</span></p>
     </div>
+
+    {% if form %}
+    <!-- Payment Summary -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-6 animate-slide-up">
+      <h3 class="font-semibold text-dark mb-4">Resumen</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between py-2 border-b border-gray-100">
+          <span class="text-sm text-gray-500">Habitación</span>
+          <span class="text-sm font-medium text-dark">{{ reserva.habitacion.tipo }}</span>
+        </div>
+        <div class="flex justify-between py-2 border-b border-gray-100">
+          <span class="text-sm text-gray-500">Precio total</span>
+          <span class="text-sm font-medium text-dark">{{ reserva.precio_total|formato_clp }}</span>
+        </div>
+        <div class="flex justify-between py-2">
+          <span class="text-sm text-gray-500">Depósito ({{ reserva.monto_porcentaje }}%)</span>
+          <span class="text-lg font-bold text-dark">{{ reserva.deposito_requerido|formato_clp }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Form -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 animate-slide-up-delay">
+      <h3 class="font-semibold text-dark mb-5">Método de Pago</h3>
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+
+        <!-- Payment Method Radio Cards -->
+        <div class="grid grid-cols-3 gap-3">
+          <label class="relative cursor-pointer">
+            <input type="radio" name="metodo" value="tarjeta" class="peer sr-only" checked>
+            <div class="flex flex-col items-center gap-2 p-4 border border-gray-200 rounded-xl peer-checked:border-dark peer-checked:bg-gray-50 transition-all">
+              <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+              <span class="text-xs font-medium text-gray-700">Tarjeta</span>
+            </div>
+          </label>
+          <label class="relative cursor-pointer">
+            <input type="radio" name="metodo" value="transferencia" class="peer sr-only">
+            <div class="flex flex-col items-center gap-2 p-4 border border-gray-200 rounded-xl peer-checked:border-dark peer-checked:bg-gray-50 transition-all">
+              <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+              <span class="text-xs font-medium text-gray-700">Transfer.</span>
+            </div>
+          </label>
+          <label class="relative cursor-pointer">
+            <input type="radio" name="metodo" value="efectivo" class="peer sr-only">
+            <div class="flex flex-col items-center gap-2 p-4 border border-gray-200 rounded-xl peer-checked:border-dark peer-checked:bg-gray-50 transition-all">
+              <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              <span class="text-xs font-medium text-gray-700">Efectivo</span>
+            </div>
+          </label>
+        </div>
+
+        <div>
+          <label for="id_referencia" class="block text-sm font-medium text-gray-700 mb-1.5">Referencia (opcional)</label>
+          <input type="text" name="referencia" id="id_referencia" placeholder="Número de transacción o comentario"
+            class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-dark/20 focus:border-dark outline-none transition-all">
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-dark text-white font-medium text-sm rounded-lg hover:bg-gray-800 transition-colors">
+          Confirmar Pago
+        </button>
+        <a href="{% url 'mis_reservas' %}" class="block text-center text-sm text-gray-500 hover:text-dark transition-colors">
+          Cancelar
+        </a>
+      </form>
+    </div>
+
+    {% else %}
+    <!-- Payment Confirmation -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 sm:p-10 text-center animate-slide-up">
+      <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5">
+        <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h2 class="font-serif text-2xl font-bold text-dark mb-2">Reserva Confirmada</h2>
+      <p class="text-gray-500 mb-1">Tu código de reserva es:</p>
+      <p class="text-2xl font-bold text-dark tracking-wider mb-6">{{ reserva.codigo }}</p>
+      <a href="{% url 'mis_reservas' %}" class="inline-flex items-center px-6 py-3 bg-dark text-white font-medium text-sm rounded-lg hover:bg-gray-800 transition-colors">
+        Ir a Mis Reservas
+      </a>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

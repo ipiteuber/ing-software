@@ -16,6 +16,7 @@ urlpatterns = [
     path('eliminar_admin/', views.eliminar_admin, name='eliminar_admin'),
 
 # ---------------------- Habitaciones ----------------------
+    path('habitaciones/', views.habitaciones, name='habitaciones'),
     path('habitacion/agregar/', views.agregar_habitacion, name='agregar_habitacion'),
     path('habitacion/<str:id_habitacion>/editar/', views.editar_habitacion, name='editar_habitacion'),
     path('habitacion/<str:id_habitacion>/eliminar/', views.eliminar_habitacion, name='eliminar_habitacion'),

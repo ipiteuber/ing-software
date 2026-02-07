@@ -1,8 +1,51 @@
 {% load static %}
 
-<!-- Footer -->
-<footer style="margin-top:3rem; text-align:center; color:#aaa;">
-    <div style="margin-bottom:1rem;">
-        <img src="{% static 'images/icon.png' %}" alt="Logo" style="width:32px; vertical-align:middle;">
+<div class="bg-dark text-white mt-auto">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-2.5 mb-3">
+          <img src="{% static 'images/icon.png' %}" alt="Pacific Reef" class="w-7 h-7 object-contain brightness-0 invert">
+          <span class="font-serif text-lg font-semibold">Pacific Reef</span>
+        </div>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          Donde la comodidad y la elegancia se combinan frente al mar.
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-3">Navegación</h4>
+        <ul class="space-y-2">
+          <li><a href="{% url 'landing_page' %}" class="text-sm text-gray-300 hover:text-white transition-colors">Inicio</a></li>
+          <li><a href="{% url 'habitaciones' %}" class="text-sm text-gray-300 hover:text-white transition-colors">Habitaciones</a></li>
+          <li><a href="{% url 'reservar' %}" class="text-sm text-gray-300 hover:text-white transition-colors">Reservar</a></li>
+          <li><a href="{% url 'mis_reservas' %}" class="text-sm text-gray-300 hover:text-white transition-colors">Mis Reservas</a></li>
+        </ul>
+      </div>
+
+      <!-- Admin -->
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-3">Administración</h4>
+        <ul class="space-y-2">
+          <li><a href="{% url 'login_admin' %}" class="text-sm text-gray-300 hover:text-white transition-colors">Acceso Admin</a></li>
+        </ul>
+      </div>
     </div>
-</footer>
+
+    <!-- Bottom -->
+    <div class="mt-10 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-gray-500">&copy; 2025 Hotel Pacific Reef. Todos los derechos reservados.</p>
+
+      <!-- Ahjin Signature -->
+      <a href="https://ahjin.agency" target="_blank" rel="noopener noreferrer" class="ahjin-signature">
+        <svg class="arise-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+        <span class="arise-phrase">Arisen by <span class="arise-brand">Ahjin</span></span>
+      </a>
+    </div>
+  </div>
+</div>

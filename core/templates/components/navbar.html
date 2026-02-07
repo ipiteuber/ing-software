@@ -1,33 +1,45 @@
 {% load static %}
 
-<!-- Navbar -->
-<header id="cs-navigation">
-    <div class="cs-container">
-        <!--Nav Logo-->
-        <a href="/" class="cs-logo" aria-label="back to home">
+<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 transition-shadow duration-300">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
 
-            <img src="{% static 'images/icon.png' %}" alt="logo" width="32" height="32"
-                style="width: 32px; height: 32px; object-fit: contain;" decoding="async">
+      <!-- Logo -->
+      <a href="{% url 'landing_page' %}" class="flex items-center gap-2.5 group">
+        <img src="{% static 'images/icon.png' %}" alt="Pacific Reef" class="w-8 h-8 object-contain">
+        <span class="font-serif text-lg font-semibold text-dark tracking-tight hidden sm:inline">Pacific Reef</span>
+      </a>
 
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="{% url 'landing_page' %}" class="text-sm font-medium text-gray-600 hover:text-dark transition-colors">Inicio</a>
+        <a href="{% url 'habitaciones' %}" class="text-sm font-medium text-gray-600 hover:text-dark transition-colors">Habitaciones</a>
+        <a href="{% url 'reservar' %}" class="text-sm font-medium text-gray-600 hover:text-dark transition-colors">Reservar</a>
+      </div>
+
+      <!-- CTA + Mobile Toggle -->
+      <div class="flex items-center gap-3">
+        <a href="{% url 'mis_reservas' %}" class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-dark rounded-lg hover:bg-gray-800 transition-colors">
+          Mis Reservas
         </a>
-        <!--Navigation List-->
-        <nav class="cs-nav" role="navigation">
-            <!--Mobile Nav Toggle-->
-            <button class="cs-toggle" aria-label="mobile menu toggle">
-                <div class="cs-box" aria-hidden="true">
-                    <span class="cs-line cs-line1" aria-hidden="true"></span>
-                    <span class="cs-line cs-line2" aria-hidden="true"></span>
-                    <span class="cs-line cs-line3" aria-hidden="true"></span>
-                </div>
-            </button>
-            <div class="cs-ul-wrapper">
-                <ul id="cs-expanded" class="cs-ul" aria-expanded="false">
-                    <li class="cs-li"><a href="{% url 'landing_page' %}" class="cs-li-link cs-active">Inicio</a></li>
-                    <li class="cs-li"><a href="" class="cs-li-link">Habitaciones</a></li>
-                    <li class="cs-li"><a href="{% url 'reservar' %}" class="cs-li-link">Reservar</a></li>
-                </ul>
-            </div>
-        </nav>
-        <a href="{% url 'mis_reservas' %}" class="cs-button-solid cs-nav-button">Mis Reservas</a>
+
+        <!-- Hamburger -->
+        <button id="mobile-toggle" class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5" aria-label="Menú">
+          <span class="hamburger-line w-5 h-0.5 bg-dark rounded-full transition-all duration-300"></span>
+          <span class="hamburger-line w-5 h-0.5 bg-dark rounded-full transition-all duration-300"></span>
+          <span class="hamburger-line w-5 h-0.5 bg-dark rounded-full transition-all duration-300"></span>
+        </button>
+      </div>
     </div>
-</header>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
+    <div class="px-4 py-4 space-y-1">
+      <a href="{% url 'landing_page' %}" class="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Inicio</a>
+      <a href="{% url 'habitaciones' %}" class="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Habitaciones</a>
+      <a href="{% url 'reservar' %}" class="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Reservar</a>
+      <a href="{% url 'mis_reservas' %}" class="block px-3 py-2.5 text-sm font-medium text-white bg-dark rounded-lg text-center mt-2">Mis Reservas</a>
+    </div>
+  </div>
+</nav>
