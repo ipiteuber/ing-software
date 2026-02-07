@@ -50,7 +50,7 @@ def seed_data(apps, schema_editor):
 
     # 4. Cliente de ejemplo
     cliente, _ = Cliente.objects.get_or_create(
-        rut='12345678-9',
+        rut='123456789',
         defaults={
             'nombre': 'Juan Pérez',
             'email': 'juan@test.com',
@@ -86,7 +86,7 @@ def reverse_seed(apps, schema_editor):
     Reserva = apps.get_model('core', 'Reserva')
 
     Reserva.objects.filter(codigo='DEMO0001').delete()
-    Cliente.objects.filter(rut='12345678-9').delete()
+    Cliente.objects.filter(rut='123456789').delete()
     Habitacion.objects.filter(id_habitacion__in=['HAB001', 'HAB002', 'HAB003', 'HAB004']).delete()
     Administrador.objects.filter(id_admin='admin001').delete()
     User.objects.filter(username='admin').delete()

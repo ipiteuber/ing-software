@@ -69,12 +69,13 @@ def reservar(request):
                 }
             )
             habitacion = form.cleaned_data['habitacion']
+            noches = (fecha_fin_dt - fecha_inicio_dt).days
             reserva = Reserva.objects.create(
                 cliente=cliente,
                 habitacion=habitacion,
                 fecha_inicio=fecha_inicio_dt,
                 fecha_fin=fecha_fin_dt,
-                precio_total=habitacion.precio,
+                precio_total=habitacion.precio * noches,
             )
             messages.success(request, f"Reserva creada. Código: {reserva.codigo}")
             return redirect('simular_pago', codigo=reserva.codigo)
